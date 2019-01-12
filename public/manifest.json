@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Tiny Blog",
+  "name": "Tiny Blog - My Personal Blog",
   "icons": [
     {
       "src": "favicon.ico",
