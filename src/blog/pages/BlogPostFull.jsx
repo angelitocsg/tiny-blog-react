@@ -1,11 +1,10 @@
 import React from 'react'
 import BlogPostHeader from './BlogPostHeader';
-import { blogPosts } from '../data/blogPosts';
 
-const BlogPostFull = ({ match }) => {
+const BlogPostFull = (posts, { match }) => {
     let id = parseInt(match.params.id);
 
-    const post = blogPosts.find(post => post.id === id);
+    const post = posts.find(post => post.id === id);
 
     if (post === undefined) {
         return (
