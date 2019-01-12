@@ -1,5 +1,6 @@
 import React from 'react'
 import BlogPostHeader from './BlogPostHeader';
+import { Link } from 'react-router-dom';
 
 const BlogPost = (props) => (
     <div>
@@ -7,7 +8,7 @@ const BlogPost = (props) => (
 
         <p>
             {props.post.content.substr(0, 150)}...{' '}
-            <a href={"/post/" + props.post.id}>[read more]</a>
+            <Link to={"/post/" + props.post.id}>[read more]</Link>
         </p>
     </div>
 )
