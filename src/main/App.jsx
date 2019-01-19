@@ -3,7 +3,6 @@ import BlogIndex from '../blog/pages/IndexPage';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import BlogForm from '../blog/pages/BlogForm';
 import BlogPostFull from '../blog/pages/BlogPostFull';
-import { blogPosts } from '../blog/data/blogPosts';
 
 //, Route, Switch
 // class App extends Component {
@@ -55,58 +54,10 @@ export default class App extends Component {
 
         this.state = {
             title: props.title,
-            subtitle: props.subtitle,
-            posts: blogPosts,
-            tempPost: {}
+            subtitle: props.subtitle
         }
 
         console.log('app reloaded')
-
-        this.handleFieldChange = this.handleFieldChange.bind(this)
-        this.handleAdd = this.handleAdd.bind(this)
-    }
-
-    handleAdd() {
-        let post = {
-            ...this.state.tempPost,
-            tags: [this.state.tempPost.tags],
-            date: new Date().toLocaleString('en-US'),
-            id: this.state.posts.length + 1
-        }
-
-        if (post.title !== undefined && post.title !== '' &&
-            post.tags !== undefined && post.tags !== '' &&
-            post.content !== undefined && post.content !== '') {
-
-            this.setState({
-                ...this.state,
-                posts: [
-                    ...this.state.posts,
-                    post
-                ],
-                tempPost: {}
-            })
-            alert('Certo! Tá adicionado')
-        } else {
-            alert('Tá errado! Preencha certo!')
-        }
-    }
-
-    handleUpdate(id, post) {
-
-    }
-
-    handleFieldChange(event) {
-        console.table(this.state.tempPost)
-        this.setState(
-            {
-                ...this.state,
-                tempPost: {
-                    ...this.state.tempPost,
-                    [event.target.name]: event.target.value
-                }
-            }
-        )
     }
 
     render() {
@@ -123,13 +74,17 @@ export default class App extends Component {
                     <hr />
 
                     <Switch>
-                        <Route exact path='/' component={() => BlogIndex(this.state.posts)} />
-                        <Route path='/post/add' component={() => BlogForm({
-                            onFieldChange: this.handleFieldChange,
-                            onSaveClick: this.handleAdd,
-                            tempPost: this.state.tempPost
-                        })} />
-                        <Route path='/post/:id' component={({ match }) => BlogPostFull(this.state.posts, { match })} />
+                        <Route exact path='/' component={BlogIndex} />
+                        <Route path='/post/add' component={BlogForm} />
+
+                        <Route path='/post/:id' component={
+                            ({ match }) => (
+                                <BlogPostFull
+                                    id={parseInt(match.params.id)}
+                                />
+                            )
+                        } />
+
                         <Route component={() => (<div>404 - Not Found</div>)} />
                     </Switch>
                 </div>

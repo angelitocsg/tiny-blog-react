@@ -1,50 +1,81 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { savePost, fieldChange } from '../actions/blogActions';
+import Textarea from '../components/Textarea';
 
-const BlogForm = (props) => (
-    <div>
-        <h2><p>New post</p></h2>
-
-        <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input type="text" name="title" id="title"
-                className="form-control"
-                value={props.tempPost.title}
-                onChange={props.onFieldChange}
-            />
-        </div>
-
-        <div className="form-group">
-            <label htmlFor="tags">Tags</label>
-            <select name="tags" id="tags"
-                className="form-control"
-                value={props.tempPost.tags}
-                onChange={props.onFieldChange}
-            >
-                <option value="">-- Select --</option>
-                <option value="food">Food</option>
-                <option value="sports">Sports</option>
-                <option value="variety">Variety</option>
-            </select>
-        </div>
-
-        <div className="form-group">
-            <label htmlFor="content">Content</label>
-            <textarea name="content" id="content"
-                className="form-control" rows="5"
-                value={props.tempPost.content}
-                onChange={props.onFieldChange}></textarea>
-            <small>0 caracters</small>
-        </div>
-
+const BlogForm = ({
+    tempPost,
+    errors,
+    onFieldChange,
+    onSaveClick
+}) => (
         <div>
-            <button
-                className="btn btn-primary"
-                onClick={props.onSaveClick}
-            >Save</button>
-            {' '}
-            <button className="btn btn-secondary">Cancel</button>
-        </div>
-    </div>
-)
+            <h2><p>New post</p></h2>
 
-export default BlogForm
+            <div className="form-group">
+                <label htmlFor="title">Title</label>
+                <input type="text" name="title" id="title"
+                    className="form-control"
+                    value={tempPost.title}
+                    onChange={onFieldChange}
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="tags">Tags</label>
+                <select name="tags" id="tags"
+                    className="form-control"
+                    value={tempPost.tags}
+                    onChange={onFieldChange}
+                >
+                    <option value="">-- Select --</option>
+                    <option value="food">Food</option>
+                    <option value="sports">Sports</option>
+                    <option value="variety">Variety</option>
+                </select>
+            </div>
+
+            <Textarea
+                label="Content"
+                rows="5"
+                name="content"
+                value={tempPost.content}
+                onChange={onFieldChange}
+            />
+
+            {errors.length === 0 ? null : (
+                <ul className="alert alert-danger">
+                    {errors.map(error => (<li> {error}</li>))}
+                </ul>
+            )}
+
+            <div>
+                <button
+                    className="btn btn-primary"
+                    onClick={onSaveClick}
+                >Save</button>
+                {' '}
+                <button className="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    )
+
+const mapStateToProps = (state) => {
+    return {
+        tempPost: state.blog.tempPost,
+        errors: state.blog.errors
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onFieldChange: (event) => dispatch(
+            fieldChange(event)
+        ),
+        onSaveClick: () => dispatch(
+            savePost()
+        )
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogForm)

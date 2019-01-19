@@ -1,9 +1,8 @@
 import React from 'react'
 import BlogPostHeader from './BlogPostHeader';
+import { connect } from 'react-redux';
 
-const BlogPostFull = (posts, { match }) => {
-    let id = parseInt(match.params.id);
-
+const BlogPostFull = ({ id, posts }) => {
     const post = posts.find(post => post.id === id);
 
     if (post === undefined) {
@@ -32,4 +31,13 @@ const BlogPostFull = (posts, { match }) => {
     )
 }
 
-export default BlogPostFull
+const mapStateToProps = (state, ownProps) => {
+    console.log(ownProps);
+
+    return {
+        posts: state.blog.posts,
+        ...ownProps
+    }
+}
+
+export default connect(mapStateToProps)(BlogPostFull)

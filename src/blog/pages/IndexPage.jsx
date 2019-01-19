@@ -1,7 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import BlogPost from './BlogPost';
 
-const BlogIndex = (posts) => (
+const BlogIndex = ({ posts }) => (
     <div>
         {posts
             .sort(
@@ -21,4 +22,10 @@ const BlogIndex = (posts) => (
     </div>
 )
 
-export default BlogIndex
+const mapStateToProps = (state) => {
+    return {
+        posts: state.blog.posts
+    }
+}
+
+export default connect(mapStateToProps)(BlogIndex)
