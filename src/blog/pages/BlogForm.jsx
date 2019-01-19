@@ -2,10 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { savePost, fieldChange } from '../actions/blogActions';
 import Textarea from '../components/Textarea';
+import Select from 'react-select'
 
 const BlogForm = ({
     tempPost,
     errors,
+    tags,
     onFieldChange,
     onSaveClick
 }) => (
@@ -23,16 +25,23 @@ const BlogForm = ({
 
             <div className="form-group">
                 <label htmlFor="tags">Tags</label>
-                <select name="tags" id="tags"
-                    className="form-control"
+                <Select
+                    isMulti
+                    closeMenuOnSelect={false}
+                    name="tags"
+                    options={tags}
+                    className="basic-multi-select"
                     value={tempPost.tags}
-                    onChange={onFieldChange}
-                >
-                    <option value="">-- Select --</option>
-                    <option value="food">Food</option>
-                    <option value="sports">Sports</option>
-                    <option value="variety">Variety</option>
-                </select>
+                    onChange={(value, obj) => onFieldChange(
+                        {
+                            target:
+                            {
+                                name: obj.name,
+                                value
+                            }
+                        }
+                    )}
+                />
             </div>
 
             <Textarea
@@ -45,7 +54,7 @@ const BlogForm = ({
 
             {errors.length === 0 ? null : (
                 <ul className="alert alert-danger">
-                    {errors.map(error => (<li> {error}</li>))}
+                    {errors.map(error => (<li key={0}> {error}</li>))}
                 </ul>
             )}
 
@@ -63,7 +72,8 @@ const BlogForm = ({
 const mapStateToProps = (state) => {
     return {
         tempPost: state.blog.tempPost,
-        errors: state.blog.errors
+        errors: state.blog.errors,
+        tags: state.blog.tags
     }
 }
 

@@ -3,7 +3,7 @@ import { SAVE_POST, FIELD_CHANGE } from "../actions/blogActions";
 
 const PostIsValid = (post) => {
     if (post.title !== undefined && post.title !== '' &&
-        post.tags !== undefined && post.tags !== '' &&
+        post.tags !== undefined && post.tags.length > 0 &&
         post.content !== undefined && post.content !== '') {
         return true;
     }
@@ -28,7 +28,8 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
 
             let post = {
                 ...state.tempPost,
-                tags: [state.tempPost.tags],
+                tags: state.tempPost.tags === undefined ? [] :
+                    [...state.tempPost.tags.map(tag => (tag.value))],
                 date: new Date().toLocaleString('en-US'),
                 id: state.posts.length + 1
             }
