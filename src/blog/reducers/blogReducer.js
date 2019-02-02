@@ -11,6 +11,8 @@ const PostIsValid = (post) => {
 }
 
 export const blogReducer = (state = INITIAL_STATE, action) => {
+    let posts = [];
+
     switch (action.type) {
         case FIELD_CHANGE:
             console.log('blogReducer FIELD_CHANGE called')
@@ -41,9 +43,17 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
                 }
             }
 
+            posts = [...state.posts, post]
+                .map(
+                    (postAtual, index) => ({
+                        ...postAtual,
+                        id: index + 1
+                    })
+                );
+
             return {
                 ...state,
-                posts: [...state.posts, post],
+                posts: [...posts],
                 errors: [],
                 tempPost: { ...INITIAL_TEMP_STATE }
             }
@@ -52,7 +62,9 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
             console.log('blogReducer DELETE_POST called')
 
             let id = action.payload.id;
-            let posts = [...state.posts.reduce((p, post) => post.id === id ? ([...p]) : ([...p, post]), [])]
+            posts = [...state.posts.reduce(
+                (p, post) => post.id === id ? [...p] : [...p, post], []
+            )]
 
             return {
                 ...state,
