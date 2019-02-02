@@ -1,5 +1,5 @@
 import { INITIAL_STATE, INITIAL_TEMP_STATE } from "../data/initialState";
-import { SAVE_POST, FIELD_CHANGE } from "../actions/blogActions";
+import { SAVE_POST, FIELD_CHANGE, DELETE_POST } from "../actions/blogActions";
 
 const PostIsValid = (post) => {
     if (post.title !== undefined && post.title !== '' &&
@@ -44,6 +44,19 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 posts: [...state.posts, post],
+                errors: [],
+                tempPost: { ...INITIAL_TEMP_STATE }
+            }
+
+        case DELETE_POST:
+            console.log('blogReducer DELETE_POST called')
+
+            let id = action.payload.id;
+            let posts = [...state.posts.reduce((p, post) => post.id === id ? ([...p]) : ([...p, post]), [])]
+
+            return {
+                ...state,
+                posts: [...posts],
                 errors: [],
                 tempPost: { ...INITIAL_TEMP_STATE }
             }
