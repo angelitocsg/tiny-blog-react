@@ -76,6 +76,7 @@ export default class App extends Component {
                     <Switch>
                         <Route exact path='/' component={BlogIndex} />
                         <Route path='/post/add' component={BlogForm} />
+                        <Route path='/post/edit' component={BlogForm} />
 
                         <Route path='/post/:id' component={
                             ({ match }) => (

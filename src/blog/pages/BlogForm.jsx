@@ -12,7 +12,7 @@ const BlogForm = ({
     onSaveClick
 }) => (
         <div>
-            <h2><p>New post</p></h2>
+            <h2><p>{tempPost.id === 0 ? 'New' : 'Edit'} post</p></h2>
 
             <div className="form-group">
                 <label htmlFor="title">Title</label>
@@ -27,7 +27,6 @@ const BlogForm = ({
                 <label htmlFor="tags">Tags</label>
                 <Select
                     isMulti
-                    closeMenuOnSelect={false}
                     name="tags"
                     options={tags}
                     className="basic-multi-select"

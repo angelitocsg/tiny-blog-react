@@ -1,5 +1,5 @@
 import { INITIAL_STATE, INITIAL_TEMP_STATE } from "../data/initialState";
-import { SAVE_POST, FIELD_CHANGE, DELETE_POST } from "../actions/blogActions";
+import { SAVE_POST, FIELD_CHANGE, DELETE_POST, EDIT_POST } from "../actions/blogActions";
 
 const PostIsValid = (post) => {
     if (post.title !== undefined && post.title !== '' &&
@@ -32,8 +32,7 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
                 ...state.tempPost,
                 tags: state.tempPost.tags === undefined ? [] :
                     [...state.tempPost.tags.map(tag => (tag.value))],
-                date: new Date().toLocaleString('en-US'),
-                id: state.posts.length + 1
+                date: new Date().toLocaleString('en-US')
             }
 
             if (!PostIsValid(post)) {
@@ -43,13 +42,16 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
                 }
             }
 
-            posts = [...state.posts, post]
-                .map(
-                    (postAtual, index) => ({
-                        ...postAtual,
-                        id: index + 1
-                    })
-                );
+            if (post.id === 0) {
+                const newId = 1 + state.posts.reduce(
+                    (id, post) => (id > post.id ? id : post.id), 0
+                )
+                posts = [...state.posts, { ...post, id: newId }]
+            } else {
+                posts = [...state.posts.map((postAtual) =>
+                    postAtual.id === post.id ? { ...post } : { ...postAtual }
+                )]
+            }
 
             return {
                 ...state,
@@ -71,6 +73,16 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
                 posts: [...posts],
                 errors: [],
                 tempPost: { ...INITIAL_TEMP_STATE }
+            }
+
+        case EDIT_POST:
+            console.log('blogReducer EDIT_POST called')
+
+            return {
+                ...state,
+                tempPost: {
+                    ...action.payload
+                }
             }
 
         default:
