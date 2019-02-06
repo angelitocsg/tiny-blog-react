@@ -31,8 +31,7 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
             let post = {
                 ...state.tempPost,
                 tags: state.tempPost.tags === undefined ? [] :
-                    [...state.tempPost.tags.map(tag => (tag.value))],
-                date: new Date().toLocaleString('en-US')
+                    [...state.tempPost.tags.map(tag => (tag.value))]
             }
 
             if (!PostIsValid(post)) {
@@ -46,7 +45,11 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
                 const newId = 1 + state.posts.reduce(
                     (id, post) => (id > post.id ? id : post.id), 0
                 )
-                posts = [...state.posts, { ...post, id: newId }]
+                posts = [...state.posts, {
+                    ...post,
+                    id: newId,
+                    date: new Date().toLocaleString('en-US')
+                }]
             } else {
                 posts = [...state.posts.map((postAtual) =>
                     postAtual.id === post.id ? { ...post } : { ...postAtual }
@@ -78,10 +81,17 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
         case EDIT_POST:
             console.log('blogReducer EDIT_POST called')
 
+            const tagsWithLabel = action.payload.tags
+                .map(tag => ({
+                    value: tag,
+                    label: state.tags.find(t => (t.value === tag)).label
+                }))
+
             return {
                 ...state,
                 tempPost: {
-                    ...action.payload
+                    ...action.payload,
+                    tags: tagsWithLabel
                 }
             }
 

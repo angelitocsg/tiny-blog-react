@@ -79,9 +79,10 @@ export default class App extends Component {
                         <Route path='/post/edit' component={BlogForm} />
 
                         <Route path='/post/:id' component={
-                            ({ match }) => (
+                            ({ match, history }) => (
                                 <BlogPostFull
                                     id={parseInt(match.params.id)}
+                                    history={history}
                                 />
                             )
                         } />

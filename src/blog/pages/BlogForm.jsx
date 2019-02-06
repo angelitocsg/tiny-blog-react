@@ -9,7 +9,8 @@ const BlogForm = ({
     errors,
     tags,
     onFieldChange,
-    onSaveClick
+    onSaveClick,
+    history
 }) => (
         <div>
             <h2><p>{tempPost.id === 0 ? 'New' : 'Edit'} post</p></h2>
@@ -53,7 +54,7 @@ const BlogForm = ({
 
             {errors.length === 0 ? null : (
                 <ul className="alert alert-danger">
-                    {errors.map(error => (<li key={0}> {error}</li>))}
+                    {errors.map(error => (<li key={0}>{'  '} {error}</li>))}
                 </ul>
             )}
 
@@ -63,16 +64,19 @@ const BlogForm = ({
                     onClick={onSaveClick}
                 >Save</button>
                 {' '}
-                <button className="btn btn-secondary">Cancel</button>
+                <button className="btn btn-secondary"
+                    onClick={() => { history.push('/') }}
+                >Cancel</button>
             </div>
         </div>
     )
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         tempPost: state.blog.tempPost,
         errors: state.blog.errors,
-        tags: state.blog.tags
+        tags: state.blog.tags,
+        ...ownProps
     }
 }
 

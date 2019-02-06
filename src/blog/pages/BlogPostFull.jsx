@@ -8,7 +8,8 @@ const BlogPostFull = ({
     id,
     posts,
     onDeleteClick,
-    onEditClick
+    onEditClick,
+    history
 }) => {
     const post = posts.find(post => post.id === id);
 
@@ -32,8 +33,11 @@ const BlogPostFull = ({
                     text => (<p key={i++}>{text}</p>)
                 )}
 
-            <Link to={"/post/edit/" + post.id} onClick={() => onEditClick(post)}>[edit]</Link>{' '}
-            <a href="/" onClick={(e) => onDeleteClick(e, post.id)}>[delete]</a>
+            <Link to="/">[voltar]</Link>
+            {' '}
+            <Link to={"/post/edit/" + post.id} onClick={() => onEditClick(post)}>[edit]</Link>
+            {' '}
+            <a href="/" onClick={(e) => onDeleteClick(e, post.id, history)}>[delete]</a>
         </div >
     )
 }
@@ -54,10 +58,10 @@ const mapDispatchToProps = (dispatch) => {
                 editPost(post)
             )
         },
-        onDeleteClick: (event, id) => {
+        onDeleteClick: (event, id, history) => {
             event.preventDefault();
             return dispatch(
-                deletePost(id)
+                deletePost(id, history)
             )
         }
     }

@@ -12,10 +12,15 @@ export const fieldChange = (event) => ({
     payload: event.target
 })
 
-export const deletePost = (id) => ({
-    type: DELETE_POST,
-    payload: { id }
-})
+export const deletePost = (id, history) => (
+    [
+        {
+            type: DELETE_POST,
+            payload: { id }
+        },
+        history.push('/')
+    ]
+)
 
 export const editPost = (post) => ({
     type: EDIT_POST,
