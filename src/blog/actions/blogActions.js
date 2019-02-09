@@ -41,7 +41,7 @@ export const savePost = (tempPost) => {
                 .catch(error => {
                     return dispatch({
                         type: SAVE_POST,
-                        payload: { errors: 'Falha ao salvar' }
+                        payload: { errors: ['Falha ao salvar'] }
                     })
                 });
         } else {
@@ -53,24 +53,27 @@ export const savePost = (tempPost) => {
                 .catch(error => {
                     return dispatch({
                         type: SAVE_POST,
-                        payload: { errors: 'Falha ao atualizar' }
+                        payload: { errors: ['Falha ao atualizar'] }
                     })
                 });
         }
     }
 }
 
-export const getAllPosts = () => {
+export const getAllPosts = (history = null) => {
     return dispatch => {
         axios
             .get(`${URL}/posts`)
             .then(resp => {
-                return dispatch({
-                    type: SAVE_POST,
-                    payload: {
-                        posts: [...resp.data]
-                    }
-                })
+                return dispatch([
+                    {
+                        type: SAVE_POST,
+                        payload: {
+                            posts: [...resp.data]
+                        }
+                    },
+                    history ? history.push('/') : null
+                ])
             })
             .catch(error => {
                 return dispatch({
@@ -88,15 +91,21 @@ export const fieldChange = (event) => ({
     payload: event.target
 })
 
-export const deletePost = (id, history) => (
-    [
-        {
-            type: DELETE_POST,
-            payload: { id }
-        },
-        history.push('/')
-    ]
-)
+export const deletePost = (id, history) => {
+    return dispatch => {
+        axios
+            .delete(`${URL}/posts/${id}`)
+            .then(resp => {
+                return dispatch(getAllPosts(history));
+            })
+            .catch(error => {
+                return dispatch({
+                    type: DELETE_POST,
+                    payload: { errors: ['Falha ao excluir'] }
+                })
+            });
+    }
+}
 
 export const editPost = (post) => ({
     type: EDIT_POST,
