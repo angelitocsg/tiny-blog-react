@@ -8,7 +8,7 @@ const BlogPost = (props) => (
 
         <p>
             {props.post.content.substr(0, 150)}...{' '}
-            <Link to={"/post/" + props.post.id}>[read more]</Link>
+            <Link to={"/post/" + props.post._id}>[read more]</Link>
         </p>
     </div>
 )

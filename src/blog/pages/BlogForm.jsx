@@ -13,7 +13,7 @@ const BlogForm = ({
     history
 }) => (
         <div>
-            <h2><p>{tempPost.id === 0 ? 'New' : 'Edit'} post</p></h2>
+            <h2><p>{tempPost._id === 0 ? 'New' : 'Edit'} post</p></h2>
 
             <div className="form-group">
                 <label htmlFor="title">Title</label>
@@ -61,7 +61,7 @@ const BlogForm = ({
             <div>
                 <button
                     className="btn btn-primary"
-                    onClick={onSaveClick}
+                    onClick={() => onSaveClick(tempPost)}
                 >Save</button>
                 {' '}
                 <button className="btn btn-secondary"
@@ -85,8 +85,8 @@ const mapDispatchToProps = (dispatch) => {
         onFieldChange: (event) => dispatch(
             fieldChange(event)
         ),
-        onSaveClick: () => dispatch(
-            savePost()
+        onSaveClick: (tempPost) => dispatch(
+            savePost(tempPost)
         )
     }
 }

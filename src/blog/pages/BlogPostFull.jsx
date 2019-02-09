@@ -11,7 +11,7 @@ const BlogPostFull = ({
     onEditClick,
     history
 }) => {
-    const post = posts.find(post => post.id === id);
+    const post = posts.find(post => post._id === id);
 
     if (post === undefined) {
         return (
@@ -35,9 +35,9 @@ const BlogPostFull = ({
 
             <Link to="/">[voltar]</Link>
             {' '}
-            <Link to={"/post/edit/" + post.id} onClick={() => onEditClick(post)}>[edit]</Link>
+            <Link to={"/post/edit/" + post._id} onClick={() => onEditClick(post)}>[edit]</Link>
             {' '}
-            <a href="/" onClick={(e) => onDeleteClick(e, post.id, history)}>[delete]</a>
+            <a href="/" onClick={(e) => onDeleteClick(e, post._id, history)}>[delete]</a>
         </div >
     )
 }
