@@ -2,7 +2,7 @@ import { blogPosts } from "./blogPosts";
 import { TAGS } from "./tags";
 
 export const INITIAL_TEMP_STATE = {
-    id: 0,
+    _id: 0,
     title: '',
     tags: [],
     content: ''

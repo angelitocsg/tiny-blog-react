@@ -1,15 +1,6 @@
 import { INITIAL_STATE, INITIAL_TEMP_STATE } from "../data/initialState";
 import { SAVE_POST, FIELD_CHANGE, DELETE_POST, EDIT_POST } from "../actions/blogActions";
 
-const PostIsValid = (post) => {
-    if (post.title !== undefined && post.title !== '' &&
-        post.tags !== undefined && post.tags.length > 0 &&
-        post.content !== undefined && post.content !== '') {
-        return true;
-    }
-    return false;
-}
-
 export const blogReducer = (state = INITIAL_STATE, action) => {
     let posts = [];
 
@@ -28,37 +19,16 @@ export const blogReducer = (state = INITIAL_STATE, action) => {
         case SAVE_POST:
             console.log('blogReducer SAVE_POST called')
 
-            let post = {
-                ...state.tempPost,
-                tags: state.tempPost.tags === undefined ? [] :
-                    [...state.tempPost.tags.map(tag => (tag.value))]
-            }
-
-            if (!PostIsValid(post)) {
+            if (action.payload.posts === undefined) {
                 return {
                     ...state,
-                    errors: ['Tá errado! Preencha certo!']
+                    errors: [...action.payload.errors]
                 }
-            }
-
-            if (post.id === 0) {
-                const newId = 1 + state.posts.reduce(
-                    (id, post) => (id > post.id ? id : post.id), 0
-                )
-                posts = [...state.posts, {
-                    ...post,
-                    id: newId,
-                    date: new Date().toLocaleString('en-US')
-                }]
-            } else {
-                posts = [...state.posts.map((postAtual) =>
-                    postAtual.id === post.id ? { ...post } : { ...postAtual }
-                )]
             }
 
             return {
                 ...state,
-                posts: [...posts],
+                posts: [...action.payload.posts],
                 errors: [],
                 tempPost: { ...INITIAL_TEMP_STATE }
             }
